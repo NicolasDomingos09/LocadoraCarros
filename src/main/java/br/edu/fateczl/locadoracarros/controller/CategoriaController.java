@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class CategoriaController {
     private CategoriaService service;
 
     @GetMapping
-    public String getCategoria(ModelMap model) {
+    public String getForm(ModelMap model) {
         model.addAttribute("categoria", new Categoria());
         model.addAttribute("categorias", new ArrayList<Categoria>());
         return "categoria";
@@ -34,11 +35,11 @@ public class CategoriaController {
     }
 
     @GetMapping("/{id}")
-    public String getCategoriaPorId(@PathVariable Long id, ModelMap model) {
+    public String getCategoriaPorId(@PathVariable Long id, ModelMap model, RedirectAttributes redirectAttributes) {
         try {
             model.addAttribute("categoria", service.getCategoriaPorId(id));
         } catch (EntityNotFoundException e) {
-            model.addAttribute("erro", e.getMessage());
+            redirectAttributes.addFlashAttribute("mensagem", e.getMessage());
             return "redirect:/categoria";
         }
         model.addAttribute("categorias", new ArrayList<Categoria>());
@@ -47,32 +48,35 @@ public class CategoriaController {
 
     @PostMapping
     public String postCategoria(@ModelAttribute("categoria") Categoria categoria,
-                                @RequestParam("imagem") MultipartFile imagem, ModelMap model) {
+                                @RequestParam("imagem") MultipartFile imagem, RedirectAttributes redirectAttributes) {
         try {
             service.salvarCategoria(categoria, imagem);
+            redirectAttributes.addFlashAttribute("mensagem", "Categoria salva com sucesso!");
         } catch (IOException e) {
-            model.addAttribute("erro", e.getMessage());
+            redirectAttributes.addFlashAttribute("mensagem", e.getMessage());
         }
         return "redirect:/categoria";
     }
 
     @PutMapping
     public String putCategoria(@ModelAttribute("categoria") Categoria categoria,
-                               @RequestParam("imagem") MultipartFile imagem, ModelMap model) {
+                               @RequestParam("imagem") MultipartFile imagem, RedirectAttributes redirectAttributes) {
         try {
             service.atualizarCategoria(categoria, imagem);
+            redirectAttributes.addFlashAttribute("mensagem", "Categoria atualizada com sucesso!");
         } catch (IOException e) {
-            model.addAttribute("erro", e.getMessage());
+            redirectAttributes.addFlashAttribute("mensagem", e.getMessage());
         }
         return "redirect:/categoria";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteCategoria(@PathVariable Long id, ModelMap model) {
+    public String deleteCategoria(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             service.deletarCategoria(id);
+            redirectAttributes.addFlashAttribute("mensagem", "Categoria excluída com sucesso!");
         } catch (IOException e) {
-            model.addAttribute("erro", e.getMessage());
+            redirectAttributes.addFlashAttribute("mensagem", e.getMessage());
         }
         return "redirect:/categoria/listar";
     }

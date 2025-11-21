@@ -5,12 +5,9 @@ import br.edu.fateczl.locadoracarros.repository.ICategoriaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -22,25 +19,29 @@ public class CategoriaService {
     @Autowired
     private UploadService uploadService;
 
+    @Transactional(readOnly = true)
     public List<Categoria> listarCategorias() {
         return repository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Categoria getCategoriaPorId(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
     }
 
+    @Transactional
     public void salvarCategoria(Categoria categoria, MultipartFile imagem) throws IOException {
-        String path = uploadService.salvarImagem(imagem);
+        String path = uploadService.salvarImagemCategoria(imagem);
         if (path != null) {
             categoria.setImagemPath(path);
         }
         repository.save(categoria);
     }
 
+    @Transactional
     public void atualizarCategoria(Categoria categoria, MultipartFile imagem) throws IOException {
-        String path = uploadService.salvarImagem(imagem);
+        String path = uploadService.salvarImagemCategoria(imagem);
         if (path != null) {
             categoria.setImagemPath(path);
         } else {
@@ -50,11 +51,11 @@ public class CategoriaService {
         repository.save(categoria);
     }
 
+    @Transactional
     public void deletarCategoria(Long id) throws IOException {
         Categoria categoria = getCategoriaPorId(id);
         if (categoria.getImagemPath() != null) {
-            Path imagePath = Paths.get("src/main/resources/static" + categoria.getImagemPath());
-            Files.deleteIfExists(imagePath);
+            uploadService.deletarImagem(categoria.getImagemPath());
         }
         repository.deleteById(id);
     }
