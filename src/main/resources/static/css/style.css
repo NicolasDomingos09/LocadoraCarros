@@ -2,3 +2,10 @@
     font-weight: bold;
     background: rgba(83, 152, 194, 0.62);
 }
+
+.botao-azul {
+    --bs-btn-bg: #2C7AA2;
+    --bs-btn-hover-bg: #5695b5;
+    --bs-btn-hover-color: white;
+    color: white;
+}

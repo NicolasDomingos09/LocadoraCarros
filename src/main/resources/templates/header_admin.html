@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
 
 <header th:fragment="header(activePage)">
@@ -8,7 +8,7 @@
 
         <a th:href="@{'/categoria'}" th:classappend="${activePage == 'categorias'} ? 'active'"
            class="d-flex align-items-center mb-0 text-white text-decoration-none p-3">EDITAR CATEGORIAS</a>
-        <a href="#" th:classappend="${activePage == 'carros'} ? 'active'"
+        <a th:href="@{'/carro'}" th:classappend="${activePage == 'carros'} ? 'active'"
            class="d-flex align-items-center mb-0 text-white text-decoration-none p-3">EDITAR CARROS</a>
         <a href="#" th:classappend="${activePage == 'pedidos'} ? 'active'"
            class="d-flex align-items-center mb-0 text-white text-decoration-none p-3">PEDIDOS E DEVOLUÇÕES</a>

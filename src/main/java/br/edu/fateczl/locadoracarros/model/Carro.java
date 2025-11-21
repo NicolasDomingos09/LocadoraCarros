@@ -28,7 +28,7 @@ public class Carro {
     private String cor;
 
     @Column(name = "ano", nullable = false)
-    private LocalDate ano;
+    private Integer ano;
 
     @Column(name = "tipo_combustivel", length = 9, nullable = false)
     private String tipoCombustivel;
@@ -39,7 +39,7 @@ public class Carro {
     @Column(name = "tipo_cambio", length = 150, nullable = false)
     private String tipoCambio;
 
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Categoria.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Categoria.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 

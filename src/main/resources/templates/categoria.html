@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
 <head th:replace="~{head :: head('Categorias')}"></head>
 <header th:replace="~{header_admin :: header(activePage='categorias')}"></header>
 <body>
@@ -10,7 +10,7 @@
 
         <!--Listar-->
         <button type="submit" th:formaction="@{/categoria/listar}" formmethod="get"
-                class="btn btn-info mb-3 w-100">Listar Categorias
+                class="btn botao-azul mb-3 w-100">Listar Categorias
         </button>
 
         <input type="hidden" th:field="*{id}" class="form-control" placeholder="Descrição da categoria">
@@ -37,20 +37,20 @@
         <!--Botões-->
         <div class="d-flex gap-2">
             <!-- PUT -->
-            <button type="submit" class="btn btn-info w-100"
+            <button type="submit" class="btn botao-azul w-100"
                     onclick="this.form._method.value='put'">
                 Atualizar
             </button>
 
             <!-- POST -->
-            <button type="submit" class="btn btn-info w-100"
+            <button type="submit" class="btn botao-azul w-100"
                     onclick="this.form._method.value='post'">
                 Salvar
             </button>
         </div>
 
-        <div th:if="erro != null">
-
+        <div th:if="mensagem != null">
+            <h5 th:text="${mensagem}"></h5>
         </div>
     </form>
 
@@ -81,27 +81,58 @@
 
                             &nbsp;
 
-                            <!--Form DELETE oculto-->
-                            <form th:action="@{'/categoria/' + ${categoria.id}}"
-                                  method="post"
-                                  th:id="'formDelete' + ${categoria.id}"
-                                  style="display:none;">
-                                <input type="hidden" name="_method" value="delete">
-                            </form>
-
-                            <!-- Botão Delete -->
+                            <!-- Botão Delete que abre o modal -->
                             <a href="#"
                                title="Excluir Categoria"
-                               th:onclick="'document.getElementById(\'formDelete' + ${categoria.id} + '\').submit(); return false;'">
+                               data-bs-toggle="modal"
+                               data-bs-target="#confirmDeleteModal"
+                               th:data-id="${categoria.id}">
                                 <i class="fa-regular fa-trash-can" style="color: black"></i>
                             </a>
                         </td>
-
+                    </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal de Confirmação de Exclusão -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza de que deseja excluir esta categoria? Esta ação não pode ser desfeita.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn botao-azul" data-bs-dismiss="modal">Cancelar</button>
+                <!-- Formulário de exclusão dentro do modal -->
+                <form id="deleteForm" method="post" th:action="@{/categoria/}" style="display: inline;">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+    confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const deleteForm = document.getElementById('deleteForm');
+        const baseAction = deleteForm.getAttribute('action');
+        deleteForm.action = baseAction + id;
+    });
+</script>
+
 </body>
 </html>
