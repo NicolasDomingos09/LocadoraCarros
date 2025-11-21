@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{head :: head('Categorias')}"></head>
-<header th:replace="~{header :: header(activePage='categorias')}"></header>
+<header th:replace="~{header_admin :: header(activePage='categorias')}"></header>
 <body>
 <div class="container flex-box justify-content-center mt-5" align="center">
     <form th:action="@{/categoria}" method="post" th:object="${categoria}" class="w-50" enctype="multipart/form-data">
