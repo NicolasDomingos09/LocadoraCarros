@@ -1,11 +1,107 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{head :: head('Categorias')}"></head>
+<header th:replace="~{header :: header(activePage='categorias')}"></header>
 <body>
-<div class="container flex-box justify-content-center">
+<div class="container flex-box justify-content-center mt-5" align="center">
+    <form th:action="@{/categoria}" method="post" th:object="${categoria}" class="w-50" enctype="multipart/form-data">
+        <!--mvc hidden method filter-->
+        <input type="hidden" name="_method" value="put">
 
+        <!--Listar-->
+        <button type="submit" th:formaction="@{/categoria/listar}" formmethod="get"
+                class="btn btn-info mb-3 w-100">Listar Categorias
+        </button>
 
+        <input type="hidden" th:field="*{id}" class="form-control" placeholder="Descrição da categoria">
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Descrição</span>
+            <input th:field="*{descricao}" class="form-control" placeholder="Descrição da categoria">
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Diária</span>
+            <input th:field="*{valorDiaria}" class="form-control" placeholder="Valor da diária da categoria">
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="file" name="imagem" class="form-control" placeholder="Imagem da categoria">
+        </div>
+
+        <!--Exibe a imagem da categoria (se existir)-->
+        <div th:if="${categoria.imagemPath}" class="mb-3">
+            <img th:src="@{${categoria.imagemPath}}" width="200" alt="Imagem da categoria" class="img-thumbnail"/>
+        </div>
+
+        <!--Botões-->
+        <div class="d-flex gap-2">
+            <!-- PUT -->
+            <button type="submit" class="btn btn-info w-100"
+                    onclick="this.form._method.value='put'">
+                Atualizar
+            </button>
+
+            <!-- POST -->
+            <button type="submit" class="btn btn-info w-100"
+                    onclick="this.form._method.value='post'">
+                Salvar
+            </button>
+        </div>
+
+        <div th:if="erro != null">
+
+        </div>
+    </form>
+
+    <!--Listagem-->
+    <div class="container d-flex align-items-center justify-content-center" th:if="${categorias.size() > 0}">
+        <div class="card mx-3 my-3" style="width: 100%;">
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descrição</th>
+                        <th>Valor da Diária</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="categoria : ${categorias}">
+                        <td th:text="${categoria.id}"></td>
+                        <td th:text="${categoria.descricao}"></td>
+                        <td th:text="${categoria.valorDiaria}"></td>
+                        <td>
+                            <!--Editar-->
+                            <a th:href="@{'/categoria/' + ${categoria.id}}" title="Editar Categoria">
+                                <i class="fa-regular fa-pen-to-square" style="color: black"></i>
+                            </a>
+
+                            &nbsp;
+
+                            <!--Form DELETE oculto-->
+                            <form th:action="@{'/categoria/' + ${categoria.id}}"
+                                  method="post"
+                                  th:id="'formDelete' + ${categoria.id}"
+                                  style="display:none;">
+                                <input type="hidden" name="_method" value="delete">
+                            </form>
+
+                            <!-- Botão Delete -->
+                            <a href="#"
+                               title="Excluir Categoria"
+                               th:onclick="'document.getElementById(\'formDelete' + ${categoria.id} + '\').submit(); return false;'">
+                                <i class="fa-regular fa-trash-can" style="color: black"></i>
+                            </a>
+                        </td>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-<h1>Categorias</h1>
 </body>
 </html>

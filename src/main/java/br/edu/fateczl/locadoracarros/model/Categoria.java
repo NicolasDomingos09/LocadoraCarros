@@ -23,4 +23,7 @@ public class Categoria {
     @Column(name = "valor_diaria", columnDefinition = "DECIMAL(5, 2)", nullable = false)
     private Double valorDiaria;
 
+    @Column(name = "imagem_path", columnDefinition = "VARCHAR(MAX)", nullable = false)
+    private String imagemPath;
+
 }
