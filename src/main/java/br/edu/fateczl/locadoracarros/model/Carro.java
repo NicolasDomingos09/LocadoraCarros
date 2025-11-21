@@ -43,4 +43,7 @@ public class Carro {
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
+    @Column(name = "imagem_path", columnDefinition = "VARCHAR(MAX)", nullable = false)
+    private String imagemPath;
+
 }

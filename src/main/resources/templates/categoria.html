@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{head :: head('Categorias')}"></head>
+<header th:replace="~{header :: header(activePage='categorias')}"></header>
 <body>
-<div class="container flex-box justify-content-center" align="center">
-    <h2 class="mb-5 mt-3">Categorias</h2>
-
-    <form th:action="@{/categoria}" method="post" th:object="${categoria}" class="w-50">
+<div class="container flex-box justify-content-center mt-5" align="center">
+    <form th:action="@{/categoria}" method="post" th:object="${categoria}" class="w-50" enctype="multipart/form-data">
         <!--mvc hidden method filter-->
         <input type="hidden" name="_method" value="put">
 
         <!--Listar-->
-        <button type="submit" formaction="categoria/listar" formmethod="get"
-                class="btn btn-secondary mb-3 w-100">Listar Categorias
+        <button type="submit" th:formaction="@{/categoria/listar}" formmethod="get"
+                class="btn btn-info mb-3 w-100">Listar Categorias
         </button>
+
+        <input type="hidden" th:field="*{id}" class="form-control" placeholder="Descrição da categoria">
 
         <div class="input-group mb-3">
             <span class="input-group-text">Descrição</span>
@@ -24,19 +25,33 @@
             <input th:field="*{valorDiaria}" class="form-control" placeholder="Valor da diária da categoria">
         </div>
 
+        <div class="input-group mb-3">
+            <input type="file" name="imagem" class="form-control" placeholder="Imagem da categoria">
+        </div>
+
+        <!--Exibe a imagem da categoria (se existir)-->
+        <div th:if="${categoria.imagemPath}" class="mb-3">
+            <img th:src="@{${categoria.imagemPath}}" width="200" alt="Imagem da categoria" class="img-thumbnail"/>
+        </div>
+
         <!--Botões-->
         <div class="d-flex gap-2">
             <!-- PUT -->
-            <button type="submit" class="btn btn-secondary w-100"
+            <button type="submit" class="btn btn-info w-100"
                     onclick="this.form._method.value='put'">
                 Atualizar
             </button>
 
             <!-- POST -->
-            <button type="submit" class="btn btn-secondary w-100">Salvar</button>
-
+            <button type="submit" class="btn btn-info w-100"
+                    onclick="this.form._method.value='post'">
+                Salvar
+            </button>
         </div>
 
+        <div th:if="erro != null">
+
+        </div>
     </form>
 
     <!--Listagem-->
@@ -49,6 +64,7 @@
                         <th>ID</th>
                         <th>Descrição</th>
                         <th>Valor da Diária</th>
+                        <th>Ações</th>
                     </tr>
                     </thead>
 
@@ -59,9 +75,9 @@
                         <td th:text="${categoria.valorDiaria}"></td>
                         <td>
                             <!--Editar-->
-                            <a th:href="@{'/categoria/' + ${categoria.id}}"
-                               title="Editar Categoria"
-                               class="fa-regular fa-pen-to-square icon-dark"></a>
+                            <a th:href="@{'/categoria/' + ${categoria.id}}" title="Editar Categoria">
+                                <i class="fa-regular fa-pen-to-square" style="color: black"></i>
+                            </a>
 
                             &nbsp;
 
@@ -76,23 +92,16 @@
                             <!-- Botão Delete -->
                             <a href="#"
                                title="Excluir Categoria"
-                               class="fa-regular fa-trash-can icon-dark"
-                               onclick="document.getElementById('formDelete' + [[${categoria.id}]]).submit(); return false;">
+                               th:onclick="'document.getElementById(\'formDelete' + ${categoria.id} + '\').submit(); return false;'">
+                                <i class="fa-regular fa-trash-can" style="color: black"></i>
                             </a>
                         </td>
 
                     </tbody>
                 </table>
-
-
             </div>
-
-
         </div>
-
     </div>
-
-
 </div>
 </body>
 </html>
