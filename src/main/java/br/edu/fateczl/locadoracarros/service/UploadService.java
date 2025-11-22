@@ -15,11 +15,12 @@ public class UploadService {
 
     public String salvarImagemCategoria(MultipartFile imagem) throws IOException {
 
+        String nomeArquivo = "";
         if (imagem.isEmpty()) {
-            return null;
+            nomeArquivo = "placeholder.webp";
+        } else {
+            nomeArquivo = UUID.randomUUID() + "_" + imagem.getOriginalFilename();
         }
-
-        String nomeArquivo = UUID.randomUUID() + "_" + imagem.getOriginalFilename();
 
         Path destino = Paths.get("src/main/resources/static/uploads/categorias/" + nomeArquivo);
         Files.createDirectories(destino.getParent());
@@ -30,11 +31,12 @@ public class UploadService {
 
     public String salvarImagemCarro(MultipartFile imagem) throws IOException {
 
+        String nomeArquivo = "";
         if (imagem.isEmpty()) {
-            return null;
+            nomeArquivo = "placeholder.webp";
+        } else {
+            nomeArquivo = UUID.randomUUID() + "_" + imagem.getOriginalFilename();
         }
-
-        String nomeArquivo = UUID.randomUUID() + "_" + imagem.getOriginalFilename();
 
         Path destino = Paths.get("src/main/resources/static/uploads/carros/" + nomeArquivo);
         Files.createDirectories(destino.getParent());
