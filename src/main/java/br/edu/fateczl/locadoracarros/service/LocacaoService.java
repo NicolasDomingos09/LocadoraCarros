@@ -3,6 +3,7 @@ package br.edu.fateczl.locadoracarros.service;
 import br.edu.fateczl.locadoracarros.model.Locacao;
 import br.edu.fateczl.locadoracarros.repository.ILocacaoRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,10 @@ public class LocacaoService {
         return locacaoRepository.findAll();
     }
 
+    public List<Locacao> listarLocacoesEmAberto(){
+        return locacaoRepository.findLocacoesEmAberto();
+    }
+
     public Locacao getLocacaoId(Long id) {
         return locacaoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Locação não encontrada"));
     }
@@ -28,14 +33,17 @@ public class LocacaoService {
                 .orElseThrow(() -> new EntityNotFoundException("Locação não encontrada"));
     }
 
+    @Transactional
     public void salvarLocacao(Locacao locacao) {
         locacaoRepository.save(locacao);
     }
 
+    @Transactional
     public void atualizarLocacao(Locacao locacao) {
         locacaoRepository.save(locacao);
     }
 
+    @Transactional
     public void deletarLocacao(Long id) {
         locacaoRepository.deleteById(id);
     }

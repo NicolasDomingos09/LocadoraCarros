@@ -30,7 +30,7 @@ public class Reparo {
     private String diagnostico;
 
     @Column(name = "valor_reparo", columnDefinition = "DECIMAL(10,2)", nullable = false)
-    private BigDecimal valor_reparo;
+    private BigDecimal valorReparo;
 
     @ManyToOne(targetEntity = Carro.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "carro_placa", nullable = false)
