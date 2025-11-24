@@ -3,6 +3,7 @@ package br.edu.fateczl.locadoracarros.service;
 import br.edu.fateczl.locadoracarros.model.Carro;
 import br.edu.fateczl.locadoracarros.repository.ICarroRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,7 @@ public class CarroService {
                 .orElseThrow(() -> new EntityNotFoundException("Carro não encontrado"));
     }
 
+    @Transactional
     public void salvarCarro(Carro carro, MultipartFile imagem) throws IOException {
         String path = uploadService.salvarImagemCarro(imagem);
         if (path != null) {
@@ -35,6 +37,7 @@ public class CarroService {
         repository.save(carro);
     }
 
+    @Transactional
     public void atualizarCarro(Carro carro, MultipartFile imagem) throws IOException {
         String path = uploadService.salvarImagemCarro(imagem);
         if (path != null) {
@@ -46,6 +49,7 @@ public class CarroService {
         repository.save(carro);
     }
 
+    @Transactional
     public void deletarCarro(String placa) throws IOException {
         Carro carro = getCarroPorPlaca(placa);
         if (carro.getImagemPath() != null) {

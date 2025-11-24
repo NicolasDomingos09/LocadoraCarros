@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Data
@@ -42,4 +43,19 @@ public class Locacao {
     @Column(name = "valor_extra", columnDefinition = "DECIMAL(10, 2)")
     private BigDecimal valorExtra;
 
+    public String getDataRetiradaFormatada() {
+        if (dataRetirada == null) {
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return dataRetirada.format(formatter);
+    }
+
+    public String getDataDevolucaoFormatada() {
+        if (dataDevolucao == null) {
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return dataDevolucao.format(formatter);
+    }
 }
