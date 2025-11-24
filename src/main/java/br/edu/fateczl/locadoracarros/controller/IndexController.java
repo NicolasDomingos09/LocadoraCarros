@@ -20,9 +20,6 @@ public class IndexController {
     @Autowired
     private CatalogoCarrosService catalogoCarrosService;
 
-    @Autowired
-    private CategoriaService categoriaService;
-
     @GetMapping
     public String getPage(ModelMap model){
         model.addAttribute("carros", catalogoCarrosService.listarCarrosDisponiveis());
