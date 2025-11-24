@@ -24,7 +24,7 @@ public class Locatario {
     @Column(name = "nome", length = 150, nullable = false)
     private String nome;
 
-    @Column(name = "habilitacao", length = 9, nullable = false)
+    @Column(name = "habilitacao", length = 11, nullable = false)
     private String habilitacao;
 
     @Column(name = "nascimento", nullable = false)

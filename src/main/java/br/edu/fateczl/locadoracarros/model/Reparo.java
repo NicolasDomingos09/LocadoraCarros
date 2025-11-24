@@ -16,6 +16,7 @@ import java.time.LocalDate;
 public class Reparo {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Long id;
 
@@ -28,7 +29,7 @@ public class Reparo {
     @Column(name = "diagnostico", length = 150, nullable = false)
     private String diagnostico;
 
-    @Column(name = "valor_reparo", columnDefinition = "DECIMAL(5,2)", nullable = false)
+    @Column(name = "valor_reparo", columnDefinition = "DECIMAL(10,2)", nullable = false)
     private BigDecimal valor_reparo;
 
     @ManyToOne(targetEntity = Carro.class, fetch = FetchType.LAZY)

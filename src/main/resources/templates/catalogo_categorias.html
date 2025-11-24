@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{head :: head('Catálogo de Categorias')}"></head>
+<header th:replace="header :: header(activePage='categorias')"></header>
+<body>
+<div class="container mt-5">
+    <h4>Categorias disponíveis</h4>
+
+    <div class="row">
+        <div th:each="categoria : ${categorias}" class="col-sm-4">
+            <div class="card mx-3 my-3 border-2 shadow-sm">
+                <a th:href="@{/catalogo/carros/{id}(id=${categoria.id})}" style="text-decoration: none;"
+                   class="card-body d-flex flex-column text-center">
+                    <img th:src="@{${categoria.imagemPath}}" alt="Imagem da categoria" class="img-thumbnail mx-auto d-block" width="300">
+                    <p th:text="${categoria.descricao}" class="fs-4 fw-semibold"></p>
+                    <p th:text="'Diária: ' + ${categoria.valorDiaria} " class="fs-4 fw-semibold"></p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<footer th:replace="~{footer :: footer}"></footer>
+</html>

@@ -13,14 +13,18 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "locacao")
-@IdClass(LocacaoId.class)
 public class Locacao {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
+
     @ManyToOne(targetEntity = Carro.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "carro_placa", referencedColumnName = "placa")
     private Carro carro;
 
-    @Id
     @ManyToOne(targetEntity = Locatario.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "locatario_cpf", referencedColumnName = "cpf")
     private Locatario locatario;
 
     @Column(name = "data_retirada", nullable = false)
@@ -29,13 +33,13 @@ public class Locacao {
     @Column(name = "dias_locacao", nullable = false)
     private Integer diasLocacao;
 
-    @Column(name = "data_devolucao", nullable = false)
+    @Column(name = "data_devolucao")
     private LocalDate dataDevolucao;
 
-    @Column(name = "valor_total", columnDefinition = "DECIMAL(5, 2)")
+    @Column(name = "valor_total", columnDefinition = "DECIMAL(10, 2)")
     private BigDecimal valorTotal;
 
-    @Column(name = "valor_extra", columnDefinition = "DECIMAL(5, 2)")
+    @Column(name = "valor_extra", columnDefinition = "DECIMAL(10, 2)")
     private BigDecimal valorExtra;
 
 }

@@ -20,7 +20,7 @@ public class Categoria {
     @Column(name = "descricao", length = 150, nullable = false)
     private String descricao;
 
-    @Column(name = "valor_diaria", columnDefinition = "DECIMAL(5, 2)", nullable = false)
+    @Column(name = "valor_diaria", columnDefinition = "DECIMAL(10, 2)", nullable = false)
     private Double valorDiaria;
 
     @Column(name = "imagem_path", columnDefinition = "VARCHAR(MAX)", nullable = false)
