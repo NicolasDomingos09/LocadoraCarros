@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{head :: head('Pedidos e Devoluções')}"></head>
+<header th:replace="header_admin :: header(activePage='pedidos')"></header>
+<body class="bg-light">
+
+<div class="container d-flex flex-column align-items-center justify-content-center mt-5">
+    <form th:action="@{/admin/locacao/buscar}" method="post" class="w-50 mb-3">
+        <div class="input-group">
+            <span class="input-group-text">Identificador ID</span>
+            <input type="text" id="buscaId" name="id" class="form-control py-2" placeholder="Número da locação">
+            <button type="submit" class="btn botao-azul">
+                Buscar
+            </button>
+        </div>
+    </form>
+
+    <form th:action="@{/relatoriocarro/gerar}" method="post" class="w-50 mb-3" target="_blank">
+        <div class="input-group">
+            <span class="input-group-text">Carros alugados no dia</span>
+            <input type="date" name="data" class="form-control py-2" placeholder="Dia para relatório">
+            <button type="submit" class="btn botao-azul">
+                Gerar Relatório
+            </button>
+        </div>
+    </form>
+
+    <form th:action="@{/relatorioreparo/gerar}" method="post" class="w-50 mb-3" target="_blank">
+        <div class="input-group">
+            <span class="input-group-text">Carros em reparo no dia</span>
+            <input type="date" name="data" class="form-control py-2" placeholder="Dia para relatório">
+            <button type="submit" class="btn botao-azul">
+                Gerar Relatório
+            </button>
+        </div>
+    </form>
+
+    <form th:action="@{/relatoriohistorico/gerar}" method="post" class="w-50 mb-3" target="_blank">
+        <div class="input-group">
+            <span class="input-group-text">Histório de cliente</span>
+            <input type="text" name="cpf" class="form-control py-2" placeholder="CPF do cliente">
+            <button type="submit" class="btn botao-azul">
+                Gerar Relatório
+            </button>
+        </div>
+    </form>
+
+    <div th:if="mensagem != null">
+        <h5 th:text="${mensagem}" class="mx-3 text-center"></h5>
+    </div>
+
+    <div class="container d-flex align-items-center justify-content-center" th:if="${locacoes.size() > 0}">
+        <div class="card mx-3 my-3" style="width: 100%;">
+            <div class="card-body">
+                <p class="fs-5">Locações em aberto</p>
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Placa do Carro</th>
+                        <th>Modelo do Carro</th>
+                        <th>CPF do Locatário</th>
+                        <th>Data Retirada</th>
+                        <th>Dias alugados</th>
+                        <th>Data de Devolução</th>
+                        <th>Valor total</th>
+                        <th>Valor extra</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="locacao : ${locacoes}">
+                        <td th:text="${locacao.id}"></td>
+                        <td th:text="${locacao.carro.placa}"></td>
+                        <td th:text="${locacao.carro.modelo}"></td>
+                        <td th:text="${locacao.locatario.cpfFormatado}"></td>
+                        <td th:text="${locacao.getDataRetiradaFormatada()}"></td>
+                        <td th:text="${locacao.diasLocacao}"></td>
+                        <td th:text="${locacao.dataDevolucao} ? ${locacao.getDataDevolucaoFormatada()} : 'Alugado'"></td>
+                        <td th:text="${#numbers.formatCurrency(locacao.valorTotal)}"></td>
+                        <td th:text="${#numbers.formatCurrency(locacao.valorExtra)}"></td>
+                        <td th:if="${locacao.dataDevolucao == null}">
+                            <a th:href="@{'/devolucao/' + ${locacao.id}}" class="btn botao-azul">Devolução</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{head :: head('Devolução de Veículo')}"></head>
+<header th:replace="~{header_admin :: header(activePage='pedidos')}"></header>
+<body class="bg-light">
+
+<div class="container my-4">
+    <form th:action="@{'/devolucao/devolver'}" th:object="${devolucaoRequest}" method="post">
+
+        <input type="hidden" th:field="*{locacao.id}"/>
+        <input type="hidden" th:field="*{locacao.valorTotal}" />
+
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card h-100 border-2 shadow-sm">
+                    <div class="card-body d-flex flex-column align-items-center text-center pt-3">
+                        <p th:text="${devolucaoRequest.locacao.carro.modelo}" class="fs-4 fw-bold text-uppercase mb-3"></p>
+                        <div class="bg-white p-2 rounded mb-3 shadow-sm" style="width: 100%;">
+                            <img th:src="@{${devolucaoRequest.locacao.carro.imagemPath}}" alt="Imagem do carro" class="img-fluid"
+                                 style="max-height: 250px;">
+                        </div>
+
+                        <div class="mt-2 text-dark fw-bold">
+                            <p class="mb-1" th:text="'Marca: ' + ${devolucaoRequest.locacao.carro.marca}"></p>
+                            <p class="mb-1" th:text="'Cor: ' + ${devolucaoRequest.locacao.carro.cor}"></p>
+                            <p class="mb-1" th:text="'Ano: ' + ${devolucaoRequest.locacao.carro.ano}"></p>
+                            <p class="mb-1" th:text="'Combustível: ' + ${devolucaoRequest.locacao.carro.tipoCombustivel}"
+                               id="tipoCombustivel"></p>
+                            <p class="mb-1" th:text="'Quilometragem: ' + ${devolucaoRequest.locacao.carro.quilometragem} + ' KM'"></p>
+                            <p class="mb-1" th:text="'Câmbio: ' + ${devolucaoRequest.locacao.carro.tipoCambio}"></p>
+                            <p class="mb-1" th:text="'Placa: ' + ${devolucaoRequest.locacao.carro.placa}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">Nome do locatário</span>
+                    <input readonly th:value="${devolucaoRequest.locacao.locatario.nome}" class="form-control py-2">
+                </div>
+
+                <div class="input-group mb-2">
+                    <span class="input-group-text">CPF do locatário</span>
+                    <input readonly th:value="${devolucaoRequest.locacao.locatario.cpfFormatado}" class="form-control py-2">
+                </div>
+
+                <div class="input-group mb-2">
+                    <span class="input-group-text">Valor total da locação</span>
+                    <input readonly th:value="${devolucaoRequest.locacao.valorTotal}" class="form-control py-2">
+                </div>
+
+                <!-- Seção de Combustível -->
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="combustivelFaltandoCheckbox">
+                    <label class="form-check-label" for="combustivelFaltandoCheckbox">
+                        Cobrar por combustível faltando?
+                    </label>
+                </div>
+
+                <div id="combustivelFaltandoDiv" class="mt-2" style="display: none;">
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Litros Faltando</span>
+                        <input type="number" id="litrosFaltando" class="form-control py-2" min="0" step="0.1">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Custo do Combustível (R$)</span>
+                        <input readonly id="custoCombustivelDisplay" class="form-control py-2">
+                        <input type="hidden" th:field="*{locacao.valorExtra}" id="custoCombustivel">
+                    </div>
+                </div>
+
+                <!-- Seção de Reparos -->
+                <div class="form-check mb-2 mt-3">
+                    <input class="form-check-input" type="checkbox" id="reparosNecessariosCheckbox">
+                    <label class="form-check-label" for="reparosNecessariosCheckbox">
+                        Necessita de reparos?
+                    </label>
+                </div>
+
+                <div id="reparosDiv" class="mt-2" style="display: none;">
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Descrição do problema</span>
+                        <input type="text" th:field="*{reparo.diagnostico}" class="form-control py-2">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Custo do Reparo (R$)</span>
+                        <input type="number" th:field="*{reparo.valorReparo}" class="form-control py-2" min="0">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Dia de entrada</span>
+                        <input type="date" th:field="*{reparo.entrada}" class="form-control py-2">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Duração do Reparo</span>
+                        <input type="number" th:field="*{reparo.diasReparo}" class="form-control py-2" min="1" step="1">
+                    </div>
+                </div>
+                <button type="submit" class="btn botao-azul w-100 py-2 fw-bold fs-5 rounded-pill">
+                    Finalizar Devolução
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Seção de Combustível
+        const combustivelCheckbox = document.getElementById('combustivelFaltandoCheckbox');
+        const combustivelDiv = document.getElementById('combustivelFaltandoDiv');
+        const litrosInput = document.getElementById('litrosFaltando');
+        const custoCombustivelDisplay = document.getElementById('custoCombustivelDisplay');
+        const custoCombustivelHidden = document.getElementById('custoCombustivel');
+        const fuelTypeString = document.getElementById('tipoCombustivel').textContent;
+        const fuelType = fuelTypeString.split(':')[1].trim().toLowerCase();
+
+        combustivelCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                combustivelDiv.style.display = 'block';
+            } else {
+                combustivelDiv.style.display = 'none';
+                litrosInput.value = '';
+                custoCombustivelDisplay.value = '';
+                custoCombustivelHidden.value = '0.0';
+            }
+        });
+
+        litrosInput.addEventListener('input', function () {
+            const litros = parseFloat(this.value);
+            let custoTotal = 0;
+
+            if (!isNaN(litros) && litros > 0) {
+                const precoPorLitro = (fuelType === 'gasolina') ? 7.00 : 5.50;
+                custoTotal = litros * precoPorLitro;
+            }
+
+            custoCombustivelDisplay.value = custoTotal.toFixed(2);
+            custoCombustivelHidden.value = custoTotal.toFixed(2);
+        });
+
+        // Seção de Reparos
+        const reparosCheckbox = document.getElementById('reparosNecessariosCheckbox');
+        const reparosDiv = document.getElementById('reparosDiv');
+        const reparoDescricaoInput = document.querySelector('input[th\\:field="*{reparo.descricao}"]');
+        const reparoValorInput = document.querySelector('input[th\\:field="*{reparo.valor}"]');
+
+
+        reparosCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                reparosDiv.style.display = 'block';
+            } else {
+                reparosDiv.style.display = 'none';
+                if (reparoDescricaoInput) reparoDescricaoInput.value = '';
+                if (reparoValorInput) reparoValorInput.value = '0.0';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
