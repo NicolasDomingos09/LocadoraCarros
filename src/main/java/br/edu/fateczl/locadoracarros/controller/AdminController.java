@@ -1,6 +1,10 @@
+/*
+ * Aplicacao do SOLID
+ * SRP (Single Responsibility Principle) - A classe tem uma única responsabilidade, que é controlar as ações administrativas relacionadas a locações.
+ * DIP (Dependency Inversion Principle) - A classe depende de uma abstração (LocacaoService), e não de uma implementação concreta.
+ */
 package br.edu.fateczl.locadoracarros.controller;
 
-import br.edu.fateczl.locadoracarros.model.Locacao;
 import br.edu.fateczl.locadoracarros.service.LocacaoService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,3 +1,7 @@
+/*
+ * Aplicacao do SOLID
+ * SRP (Single Responsibility Principle) - A classe tem uma única responsabilidade, que é representar a entidade Locatario.
+ */
 package br.edu.fateczl.locadoracarros.model;
 
 import jakarta.persistence.Column;

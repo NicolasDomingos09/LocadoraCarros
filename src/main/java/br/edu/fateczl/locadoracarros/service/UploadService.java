@@ -1,3 +1,7 @@
+/*
+ * Aplicacao do SOLID
+ * SRP (Single Responsibility Principle) - A classe tem uma única responsabilidade, que é gerenciar o upload de arquivos.
+ */
 package br.edu.fateczl.locadoracarros.service;
 
 
