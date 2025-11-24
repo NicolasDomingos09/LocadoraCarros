@@ -5,12 +5,42 @@
 <body class="bg-light">
 
 <div class="container d-flex flex-column align-items-center justify-content-center mt-5">
-    <form th:action="@{/admin/locacao/buscar}" method="post" class="w-50">
-        <div class="input-group mb-2">
+    <form th:action="@{/admin/locacao/buscar}" method="post" class="w-50 mb-3">
+        <div class="input-group">
             <span class="input-group-text">Identificador ID</span>
             <input type="text" id="buscaId" name="id" class="form-control py-2" placeholder="Número da locação">
             <button type="submit" class="btn botao-azul">
                 Buscar
+            </button>
+        </div>
+    </form>
+
+    <form th:action="@{/relatoriocarro/gerar}" method="post" class="w-50 mb-3" target="_blank">
+        <div class="input-group">
+            <span class="input-group-text">Carros alugados no dia</span>
+            <input type="date" name="data" class="form-control py-2" placeholder="Dia para relatório">
+            <button type="submit" class="btn botao-azul">
+                Gerar Relatório
+            </button>
+        </div>
+    </form>
+
+    <form th:action="@{/relatorioreparo/gerar}" method="post" class="w-50 mb-3" target="_blank">
+        <div class="input-group">
+            <span class="input-group-text">Carros em reparo no dia</span>
+            <input type="date" name="data" class="form-control py-2" placeholder="Dia para relatório">
+            <button type="submit" class="btn botao-azul">
+                Gerar Relatório
+            </button>
+        </div>
+    </form>
+
+    <form th:action="@{/relatoriohistorico/gerar}" method="post" class="w-50 mb-3" target="_blank">
+        <div class="input-group">
+            <span class="input-group-text">Histório de cliente</span>
+            <input type="text" name="cpf" class="form-control py-2" placeholder="CPF do cliente">
+            <button type="submit" class="btn botao-azul">
+                Gerar Relatório
             </button>
         </div>
     </form>

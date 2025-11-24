@@ -1,3 +1,8 @@
+/*
+ * Aplicacao do SOLID
+ * SRP (Single Responsibility Principle) - A classe tem uma única responsabilidade, que é controlar o processo de devolução de veículos.
+ * DIP (Dependency Inversion Principle) - A classe depende de abstrações (LocacaoService, LocatarioService, ReparoService), e não de implementações concretas.
+ */
 package br.edu.fateczl.locadoracarros.controller;
 
 import br.edu.fateczl.locadoracarros.model.Locacao;

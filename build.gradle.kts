@@ -37,6 +37,12 @@ dependencies {
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports-pdf
+    implementation("net.sf.jasperreports:jasperreports-pdf:7.0.2")
+
+    // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
+    implementation("net.sf.jasperreports:jasperreports:7.0.2")
 }
 
 tasks.withType<Test> {
