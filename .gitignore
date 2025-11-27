@@ -1,13 +1,16 @@
 HELP.md
 .gradle
+
+build/*
+!build/reports
+build/reports/*
+!build/reports/project/
+build/reports/project/*
+!/build/reports/project/dependencies/
+
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
-/build/classes/
-/build/generated/
-/build/resources/
-/build/tmp/
 
 
 ### STS ###
@@ -40,3 +43,5 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
